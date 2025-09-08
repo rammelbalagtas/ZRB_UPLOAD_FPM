@@ -1,0 +1,4 @@
+@EndUserText.label: 'Vendor Upload'
+define service ZSD_VENDOR_UPLOAD {
+  expose ZC_VENDORS_UPLOAD;
+}

@@ -1,0 +1,34 @@
+managed implementation in class zbp_i_vendors unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_VENDORS alias Vendors
+persistent table zvendors
+draft table zvendorsd
+etag master locallastchangedat
+lock master
+total etag locallastchangedat
+authorization master ( global )
+{
+  internal create;
+  internal update;
+  internal delete;
+  field ( readonly ) Id;
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+
+  static action uploadFile1 parameter zabs_vendor;
+  static action uploadFile2 parameter zabs_vendor result [0..*] $self;
+  static action processAll;
+
+  event OnUpload for side effects;
+
+  side effects
+  {
+    event OnUpload affects $self;
+//    action processAll affects $self;
+  }
+}

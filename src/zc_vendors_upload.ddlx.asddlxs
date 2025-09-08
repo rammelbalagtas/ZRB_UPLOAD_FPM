@@ -1,0 +1,39 @@
+@Metadata.layer: #CUSTOMER
+annotate entity ZC_VENDORS_UPLOAD with
+{
+  @UI.facet      : [
+     {
+         id         : 'Parameters',
+         purpose    : #STANDARD,
+//         label      : 'Parameters',
+         position: 10,
+         type: #COLLECTION
+     }]
+
+  @EndUserText.label: 'Vendor ID'
+  @UI.lineItem      : [{ position: 10 }]
+                     //  { type: #FOR_ACTION, label: 'Process All', dataAction: 'processAll' }]
+  @UI.selectionField : [{ position: 10 }]
+  Id;
+  @UI.lineItem      : [{ position: 20, label: 'Company' }]
+  Company;
+  @UI.lineItem      : [{ position: 30, label: 'Email' }]
+  Email;
+  @UI.lineItem      : [{ position: 40, label: 'Phone Number' }]
+  Phone;
+  @UI.lineItem      : [{ position: 50, label: 'Message' }]
+  Message;
+  @UI.lineItem      : [{ position: 60, label: 'Processed' }]
+  Processed;
+  @UI.hidden: true
+  Localcreatedby;
+  @UI.hidden: true
+  Localcreatedat;
+  @UI.hidden: true
+  Locallastchangedby;
+  @UI.hidden: true
+  Locallastchangedat;
+  @UI.hidden: true
+  Lastchangedat;
+
+}
