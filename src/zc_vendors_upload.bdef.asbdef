@@ -8,6 +8,7 @@ define behavior for ZC_VENDORS_UPLOAD //alias <alias_name>
   use action uploadFile1;
   use action uploadFile2;
   use action processAll;
+  use action deletePreviousRecords;
 
   use action Edit;
   use action Activate;

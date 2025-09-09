@@ -10,6 +10,8 @@ CLASS lhc_ZI_VENDORS DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR ACTION vendors~uploadfile2 RESULT result.
     METHODS processall FOR MODIFY
       IMPORTING keys FOR ACTION vendors~processall.
+    METHODS deletepreviousrecords FOR MODIFY
+      IMPORTING keys FOR ACTION vendors~deletepreviousrecords.
 
 ENDCLASS.
 
@@ -316,6 +318,38 @@ CLASS lhc_ZI_VENDORS IMPLEMENTATION.
 *    READ TABLE keys ASSIGNING FIELD-SYMBOL(<fs_key>) INDEX 1.
 *    result = VALUE #( FOR vendor IN lt_vendor (  %cid = <fs_key>-%cid
 *                                                %param = vendor ) ).
+
+  ENDMETHOD.
+
+  METHOD deletePreviousRecords.
+
+    TYPES: BEGIN OF ts_my_entity_key,
+             id TYPE string,
+           END OF ts_my_entity_key.
+
+    TYPES: tt_my_entity_keys TYPE STANDARD TABLE OF ts_my_entity_key WITH EMPTY KEY.
+
+    DATA: lt_keys_draft   TYPE tt_my_entity_keys.
+    DATA: lt_keys_active  TYPE tt_my_entity_keys.
+
+    " Populate lt_keys with the keys of the records you want to read
+    SELECT id FROM zvendors INTO TABLE @lt_keys_active.
+
+    READ ENTITIES OF zi_vendors IN LOCAL MODE
+            ENTITY Vendors
+            ALL FIELDS
+            WITH VALUE #( FOR ls_key IN lt_keys_active ( %is_draft = '00'
+                                                        %key-Id = ls_key-id ) )
+            RESULT DATA(lt_vendor_active).
+
+    "Delete active entities
+    MODIFY ENTITIES OF zi_vendors IN LOCAL MODE
+    ENTITY Vendors
+    DELETE FROM VALUE #( FOR ls_vendor_active IN lt_vendor_active (  "%is_draft = ls_vendor_active-%is_draft
+                                                                     %key-Id   = ls_vendor_active-id ) )
+    MAPPED DATA(lt_mapped_delete)
+    REPORTED DATA(lt_reported_delete)
+    FAILED DATA(lt_failed_delete).
 
   ENDMETHOD.
 

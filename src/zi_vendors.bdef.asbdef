@@ -23,6 +23,7 @@ authorization master ( global )
   static action uploadFile1 parameter zabs_vendor;
   static action uploadFile2 parameter zabs_vendor result [0..*] $self;
   static action processAll;
+  static action deletePreviousRecords ;
 
   event OnUpload for side effects;
 
